@@ -1,5 +1,5 @@
-[
-    {
+{
+    "Valkyrie": {
         "name": "Valkyrie",
         "displacement": 300,
         "hpmax": 132,
@@ -68,7 +68,7 @@
             }
         }
     },
-    {
+    "Chariot": {
         "name": "Chariot",
         "displacement": 650,
         "hpmax": 257,
@@ -117,4 +117,4 @@
             }
         }
     }
-]
+}
