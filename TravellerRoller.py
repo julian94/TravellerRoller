@@ -47,6 +47,8 @@ class TravellerRoller(discord.Client):
 	async def roll_dice(message, content):
 		dice = int(content)
 		await message.channel.send(f"Rolled {dice}d6: ")
+	
+	
 
 
 

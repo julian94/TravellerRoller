@@ -1,0 +1,17 @@
+{
+    "name": "Valkyrie",
+    "hp": 132,
+    "armour": 12,
+    "guns": {
+        "barbette": {
+            "bonus": 0,
+            "damage": 4,
+            "multiplier": 1
+        },
+        "meson": {
+            "bonus": 0,
+            "damage": 1,
+            "multiplier": 10
+        }
+    }
+}
