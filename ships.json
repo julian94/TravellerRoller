@@ -4,6 +4,7 @@
         "displacement": 300,
         "hpmax": 132,
         "hp": 132,
+        "sensors": 5,
         "armour": 12,
         "guns": {
             "barbette": {
@@ -24,17 +25,47 @@
             }
         },
         "critical_locations": {
-            "sensors": -1,
-            "power": 0,
-            "fuel": 0,
-            "weapon": 0,
-            "armour": 0,
-            "hull": 0,
-            "m-drive": 0,
-            "cargo": 0,
+            "sensors": {
+                "protection": 1,
+                "severity": 0
+            },
+            "power": {
+                "protection": 0,
+                "severity": 0
+            },
+            "fuel": {
+                "protection": 0,
+                "severity": 0
+            },
+            "weapon": {
+                "protection": 0,
+                "severity": 0
+            },
+            "armour": {
+                "protection": 0,
+                "severity": 0
+            },
+            "hull": {
+                "protection": 0,
+                "severity": 0
+            },
+            "m-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "cargo": {
+                "protection": 0,
+                "severity": 0
+            },
             "j-drive": null,
-            "crew": -1,
-            "computer": -1
+            "crew": {
+                "protection": 1,
+                "severity": 0
+            },
+            "computer": {
+                "protection": 1,
+                "severity": 0
+            }
         }
     },
     {
@@ -42,20 +73,48 @@
         "displacement": 650,
         "hpmax": 257,
         "hp": 257,
+        "sensors": -2,
         "armour": 0,
         "guns": {},
         "critical_locations": {
-            "sensors": 0,
-            "power": 0,
-            "fuel": 0,
-            "weapon": 0,
-            "armour": 0,
-            "hull": 0,
-            "m-drive": 0,
-            "cargo": 0,
-            "j-drive": 0,
-            "crew": 0,
-            "computer": 0
+            "sensors": {
+                "protection": 0,
+                "severity": 0
+            },
+            "power": {
+                "protection": 0,
+                "severity": 0
+            },
+            "fuel": {
+                "protection": 0,
+                "severity": 0
+            },
+            "weapon": null,
+            "armour": {
+                "protection": 0,
+                "severity": 0
+            },
+            "hull": {
+                "protection": 0,
+                "severity": 0
+            },
+            "m-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "cargo": null,
+            "j-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "crew": {
+                "protection": 0,
+                "severity": 0
+            },
+            "computer": {
+                "protection": 0,
+                "severity": 0
+            }
         }
     }
 ]
