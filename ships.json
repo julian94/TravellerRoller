@@ -1,17 +1,61 @@
-{
-    "name": "Valkyrie",
-    "hp": 132,
-    "armour": 12,
-    "guns": {
-        "barbette": {
-            "bonus": 0,
-            "damage": 4,
-            "multiplier": 1
+[
+    {
+        "name": "Valkyrie",
+        "displacement": 300,
+        "hpmax": 132,
+        "hp": 132,
+        "armour": 12,
+        "guns": {
+            "barbette": {
+                "type": "barbette",
+                "count": 2,
+                "bonus": 2,
+                "damage": 4,
+                "multiplier": 1,
+                "minyield": 2
+            },
+            "meson": {
+                "type": "medium_bay",
+                "count": 1,
+                "bonus": 2,
+                "damage": 1,
+                "multiplier": 10,
+                "minyield": 1
+            }
         },
-        "meson": {
-            "bonus": 0,
-            "damage": 1,
-            "multiplier": 10
+        "critical_locations": {
+            "sensors": -1,
+            "power": 0,
+            "fuel": 0,
+            "weapon": 0,
+            "armour": 0,
+            "hull": 0,
+            "m-drive": 0,
+            "cargo": 0,
+            "j-drive": null,
+            "crew": -1,
+            "computer": -1
+        }
+    },
+    {
+        "name": "Chariot",
+        "displacement": 650,
+        "hpmax": 257,
+        "hp": 257,
+        "armour": 0,
+        "guns": {},
+        "critical_locations": {
+            "sensors": 0,
+            "power": 0,
+            "fuel": 0,
+            "weapon": 0,
+            "armour": 0,
+            "hull": 0,
+            "m-drive": 0,
+            "cargo": 0,
+            "j-drive": 0,
+            "crew": 0,
+            "computer": 0
         }
     }
-}
+]
