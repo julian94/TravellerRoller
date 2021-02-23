@@ -1,6 +1,6 @@
 # TravellerRoller
 Dice roller for Traveller.
-Supports self-updating through webhooks.*(maybe)
+Supports self-updating through webhooks.
 
 
 
