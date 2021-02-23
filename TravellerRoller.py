@@ -4,6 +4,9 @@ import asyncio
 import json
 import math
 
+def chunkstring(string):
+    return (string[0+i:2000+i] for i in range(0, len(string), 2000))
+
 class TravellerRoller(discord.Client):
 	CritLocations = {
 		2: "sensors",
@@ -150,28 +153,35 @@ class TravellerRoller(discord.Client):
 		# Split into command and content.
 		parts = message.content.split(' ', 1)
 		keyword = parts[0][1:]
-		content = parts[1]
+		content = ""
+		if len(parts) > 1:
+			content = parts[1]
 
 		if keyword == "attack":
 			await self.ship_attack(message, content)
+		elif keyword == "id":
+			await self.return_id(message)
 		else:
 			await message.channel.send("Unknown command.")
+	
+	async def return_id(self, message):
+		await message.channel.send(f"Your unique ID is: {message.author.id}")
 	
 	async def roll_dice(self, message, content):
 		dice = int(content)
 		await message.channel.send(f"Rolled {dice}d6: {self.md6(dice)}")
 	
-	async def apply_damage_and_sustained_crit(self, ship, new_damage):
+	def apply_damage_and_sustained_crit(self, ship, new_damage):
 		old_treshold = math.floor((ship["hp"]*10)/ship["hpmax"])
 		ship["hp"] -= new_damage
 		new_treshold = math.floor((ship["hp"]*10)/ship["hpmax"])
 
 		if (old_treshold - new_treshold) == 0: return None
 		if ship["hp"] <= 0: return None
-		return f"Due to damage a critical hit has happened\n{await self.resolve_crit(ship, old_treshold - new_treshold)}"
+		return f"\nDue to damage a critical hit has happened\n{self.resolve_crit(ship, old_treshold - new_treshold)}"
 
 	
-	async def resolve_crit(self, ship, severity, location = None):
+	def resolve_crit(self, ship, severity, location = None):
 		crit_message = ""
 		while location is None or ship["critical_locations"][location] is None:
 			location = self.CritLocations[self.twod6()]
@@ -185,14 +195,14 @@ class TravellerRoller(discord.Client):
 		if shiplocation["severity"] == 6:
 			damage = self.md6(6)
 			crit_message += f"\nShip takes {damage} extra damage as {location} has already been severely damaged."
-			if m := await self.apply_damage_and_sustained_crit(ship, damage):
+			if m := self.apply_damage_and_sustained_crit(ship, damage):
 				crit_message += m
 			return crit_message
 		
 		# Apply use whichever severity is highest
 		severity = max(severity, shiplocation["severity"] + 1)
 		# Note what crit happened
-		crit_message += self.CritEffects[location][severity] + "\n"
+		crit_message += self.CritEffects[location][severity]
 		shiplocation["severity"] = severity
 
 		# Apply special effects
@@ -206,18 +216,21 @@ class TravellerRoller(discord.Client):
 				# List guns and destroy/disable one at random
 				gun_count = 0
 				for gun in ship["guns"]:
-					gun_count += gun["count"]
+					print(ship["guns"])
+					print(ship["guns"][gun])
+					print(ship["guns"][gun]["count"])
+					gun_count += ship["guns"][gun]["count"]
 				chosen_gun = random.randint(0, gun_count)
 				gun_count = 0
 				for gun in ship["guns"]:
-					gun_count += gun["count"]
+					gun_count += ship["guns"][gun]["count"]
 					if gun_count >= chosen_gun:
-						if gun["count"] == 1:
-							crit_message += f"\n The last {gun['name']} was disabled/destroyed."
-							gun = None
+						if ship["guns"][gun]["count"] == 1:
+							crit_message += f"\n The last {ship['guns'][gun]['name']} was disabled/destroyed."
+							ship["guns"][gun] = None
 						else:
-							crit_message += f"\n A {gun['name']} was disabled/destroyed."
-							gun["count"] -= 1
+							crit_message += f"\n A {ship['guns'][gun]['name']} was disabled/destroyed."
+							ship["guns"][gun]["count"] -= 1
 						break
 		elif location == "armour":
 			if severity == 1:
@@ -234,8 +247,8 @@ class TravellerRoller(discord.Client):
 				ship["armour"] = 0
 		elif  location == "hull":
 			damage = self.md6(severity)
-			crit_message += f"\nShip takes an additional {damage}"
-			if m := await self.apply_damage_and_sustained_crit(ship, damage):
+			crit_message += f"\nShip takes an additional {damage} damage."
+			if m := self.apply_damage_and_sustained_crit(ship, damage):
 				crit_message += m
 
 
@@ -249,11 +262,11 @@ class TravellerRoller(discord.Client):
 			or location == "m-drive" and severity == 6
 			or location == "cargo" and severity >= 5
 			or location == "j-drive" and severity >= 4 )):
-			crit_message += await self.resolve_crit(ship, 1, "hull")
+			crit_message += self.resolve_crit(ship, 1, "hull")
 		elif (ship["critical_locations"]["hull"]["severity"] < 6 and
 			(location == "power" and severity == 6
 			or location == "fuel" and severity == 6)):
-			crit_message += await self.resolve_crit(ship, self.d6(), "hull")
+			crit_message += self.resolve_crit(ship, self.d6(), "hull")
 
 		return crit_message
 
@@ -262,34 +275,74 @@ class TravellerRoller(discord.Client):
 	async def ship_attack(self, message, content):
 		parts = content.split(' ')
 		attacker_name = parts[0]
-		weapon_name = parts[1]
-		target_name = parts[2]
+		target_name = parts[1]
+		weapon_name = parts[2]
 
 		attacker = ships[attacker_name]
 		weapon = attacker["guns"][weapon_name]
 		target = ships[target_name]
 
+		attack_count = 1
+		if len(parts) > 3:
+			if parts[3].isdigit():
+				attack_count = int(parts[3])
+				print (f"using {parts[3]} guns")
+			else:
+				if parts[3] == "all":
+					print (f"using all guns")
+					attack_count = weapon["count"]
+				else:
+					print (f"ruh roh: {parts[3]}")
+
+
+		result_message = "Resolving attack:"
+
+		for _ in range(attack_count):
+			result_message += "\n" +self.resolve_attack(attacker, weapon, target)
+			if target is None or target["hp"] <= 0:
+				result_message += f"\n{target['name']} has been utterly destroyed!"
+				target = None
+				break
+
+		
+		# Do this last
+		if target is not None and target["hp"] > 0:
+			result_message += f"\n{target['name']} still has {target['hp']}/{target['hpmax']} hull points."
+		
+		# If result is too long, split it up.
+		if len(result_message) >= 2000:
+			for chunk in chunkstring(result_message):
+				await message.channel.send(chunk)
+		else:
+			await message.channel.send(result_message)
+
+
+	def resolve_attack(self, attacker, weapon, target):
+		result_message = ""
 		# Try to hit the target
-		effect = self.twod6() + weapon["bonus"]
+		effect = self.twod6() + weapon["bonus"] - 8
 		if effect < 0:
-			await message.channel.send("Hey fucker, you missed!")
-			return
+			result_message = "Attack Missed."
+			return result_message
 
 		# Deal damage
-		damage_roll = self.weapon_d6(weapon["damage"], weapon["minyield"]) * weapon["multiplier"]
+		damage_roll = self.weapon_d6(weapon["damage"], weapon["minyield"]) * weapon["multiplier"] + (weapon["link"] * weapon["damage"])
 		if weapon["multiplier"] == 1: damage_roll += effect
 
-		damage_inflicted = damage_roll - target["armour"]
+		effective_armour = target["armour"] - weapon["ap"]
+		if effective_armour < 0: effective_armour = 0
+
+		damage_inflicted = damage_roll - effective_armour
 
 		# Make a message for the user
-		attack_message = f"Resolving attack from {attacker_name}'s {weapon_name} against {target_name}'\n"
+		result_message = f"---Resolving attack from {attacker['name']} against {target['name']}'---\n"
 
 		# Critical Hit stuff
 		crits = []
-		sustained_crits = await self.apply_damage_and_sustained_crit(target, damage_inflicted)
-		attack_message += f"{target_name} took {damage_inflicted} damage.\n"
+		sustained_crits = self.apply_damage_and_sustained_crit(target, damage_inflicted)
+		result_message += f"{target['name']} took {damage_inflicted} damage."
 		if sustained_crits is not None:
-			attack_message += sustained_crits
+			result_message += sustained_crits
 
 		can_crit_from_weapon = True
 		if target["displacement"] > 2000 and weapon["type"] in ["turret", "barbette"]:
@@ -307,16 +360,10 @@ class TravellerRoller(discord.Client):
 		
 		if len(crits) > 0:
 			for crit in crits:
-				print(crit)
-				attack_message += await self.resolve_crit(target, crit)
+				result_message += self.resolve_crit(target, crit)
 		
-		# Do this last
-		if target["hp"] <= 0:
-			attack_message += "\nTarget successfully destroyed!"
-		else:
-			attack_message += f"\n{target_name} still has {target['hp']}/{target['hpmax']} hull points."
+		return result_message
 		
-		await message.channel.send(attack_message)
 
 
 

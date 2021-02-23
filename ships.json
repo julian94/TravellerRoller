@@ -1,6 +1,7 @@
 {
     "Valkyrie": {
-        "name": "Valkyrie",
+        "admiral": 163704281092849664,
+        "name": "Valkyrie Battlerider",
         "displacement": 300,
         "hpmax": 132,
         "hp": 132,
@@ -8,20 +9,26 @@
         "armour": 12,
         "guns": {
             "barbette": {
+                "name": "Particle Barbette",
                 "type": "barbette",
                 "count": 2,
-                "bonus": 2,
+                "bonus": 4,
                 "damage": 4,
                 "multiplier": 1,
-                "minyield": 2
+                "minyield": 2,
+				"ap": 0,
+				"link": 0
             },
             "meson": {
+                "name": "Medium Meson Bay",
                 "type": "medium_bay",
                 "count": 1,
-                "bonus": 2,
+                "bonus": 5,
                 "damage": 1,
                 "multiplier": 10,
-                "minyield": 1
+                "minyield": 1,
+				"ap": 1000,
+				"link": 0
             }
         },
         "critical_locations": {
@@ -69,7 +76,8 @@
         }
     },
     "Chariot": {
-        "name": "Chariot",
+        "admiral": 163704281092849664,
+        "name": "Chariot Battlebarge",
         "displacement": 650,
         "hpmax": 257,
         "hp": 257,
@@ -107,6 +115,223 @@
                 "protection": 0,
                 "severity": 0
             },
+            "crew": {
+                "protection": 0,
+                "severity": 0
+            },
+            "computer": {
+                "protection": 0,
+                "severity": 0
+            }
+        }
+    },
+    "Raptor": {
+        "name": "Raptor Heavy Destroyer",
+        "displacement": 2000,
+        "hpmax": 880,
+        "hp": 880,
+        "sensors": 3,
+        "armour": 10,
+        "guns": {
+            "turrets": {
+                "name": "Quad Pulse Laser Turret",
+                "type": "turret",
+                "count": 15,
+                "bonus": 4,
+                "damage": 2,
+                "multiplier": 1,
+                "minyield": 2,
+				"ap": 0,
+				"link": 3
+            },
+            "particle": {
+                "name": "Small Particle Bay",
+                "type": "small_bay",
+                "count": 5,
+                "bonus": 2,
+                "damage": 6,
+                "multiplier": 1,
+                "minyield": 1,
+				"ap": 0,
+				"link": 0
+            }
+        },
+        "critical_locations": {
+            "sensors": {
+                "protection": 0,
+                "severity": 0
+            },
+            "power": {
+                "protection": 0,
+                "severity": 0
+            },
+            "fuel": {
+                "protection": 0,
+                "severity": 0
+            },
+            "weapon": {
+                "protection": 0,
+                "severity": 0
+            },
+            "armour": {
+                "protection": 0,
+                "severity": 0
+            },
+            "hull": {
+                "protection": 0,
+                "severity": 0
+            },
+            "m-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "cargo": {
+                "protection": 0,
+                "severity": 0
+            },
+            "j-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "crew": {
+                "protection": 0,
+                "severity": 0
+            },
+            "computer": {
+                "protection": 0,
+                "severity": 0
+            }
+        }
+    },
+	"Nisina": {
+        "name": "Super Nisina Escort Carrier",
+        "displacement": 1000,
+        "hpmax": 432,
+        "hp": 432,
+        "sensors": 3,
+        "armour": 2,
+        "guns": {
+            "particle": {
+                "name": "Particle Barbette",
+                "type": "barbette",
+                "count": 4,
+                "bonus": 2,
+                "damage": 4,
+                "multiplier": 1,
+                "minyield": 2,
+				"ap": 0,
+				"link": 0
+            },
+            "missile": {
+                "name": "Missile Barbette",
+                "type": "barbette",
+                "count": 6,
+                "bonus": 2,
+                "damage": 4,
+                "multiplier": 1,
+                "minyield": 1,
+				"ap": 0,
+				"link": 0
+            }
+        },
+        "critical_locations": {
+            "sensors": {
+                "protection": 0,
+                "severity": 0
+            },
+            "power": {
+                "protection": 0,
+                "severity": 0
+            },
+            "fuel": {
+                "protection": 0,
+                "severity": 0
+            },
+            "weapon": {
+                "protection": 0,
+                "severity": 0
+            },
+            "armour": {
+                "protection": 0,
+                "severity": 0
+            },
+            "hull": {
+                "protection": 0,
+                "severity": 0
+            },
+            "m-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "cargo": {
+                "protection": 0,
+                "severity": 0
+            },
+            "j-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "crew": {
+                "protection": 0,
+                "severity": 0
+            },
+            "computer": {
+                "protection": 0,
+                "severity": 0
+            }
+        }
+    },
+	"Fighter": {
+        "name": "Point Defence Fighter",
+        "displacement": 10,
+        "hpmax": 4,
+        "hp": 4,
+        "sensors": 2,
+        "armour": 12,
+        "guns": {
+            "laser": {
+                "name": "Fixed Pulse Laser",
+                "type": "fixed",
+                "count": 4,
+                "bonus": 5,
+                "damage": 2,
+                "multiplier": 1,
+                "minyield": 2,
+				"ap": 0,
+				"link": 0
+            }
+        },
+        "critical_locations": {
+            "sensors": {
+                "protection": 0,
+                "severity": 0
+            },
+            "power": {
+                "protection": 0,
+                "severity": 0
+            },
+            "fuel": {
+                "protection": 0,
+                "severity": 0
+            },
+            "weapon": {
+                "protection": 0,
+                "severity": 0
+            },
+            "armour": {
+                "protection": 0,
+                "severity": 0
+            },
+            "hull": {
+                "protection": 0,
+                "severity": 0
+            },
+            "m-drive": {
+                "protection": 0,
+                "severity": 0
+            },
+            "cargo": null,
+            "j-drive": null,
             "crew": {
                 "protection": 0,
                 "severity": 0
