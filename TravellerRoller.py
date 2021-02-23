@@ -366,14 +366,14 @@ class TravellerRoller(discord.Client):
 		
 
 
+ships = None
+token = None
 
+def start():
+	ships = json.load(open('./ships.json'))
+	token = json.load(open('./token.json'))["token"]
+	client = TravellerRoller()
+	client.run(token)
 
-
-
-
-ships = json.load(open('./ships.json'))
-token = json.load(open('./token.json'))["token"]
-
-client = TravellerRoller()
-client.run(token)
-
+if __name__ == '__main__':
+	start()

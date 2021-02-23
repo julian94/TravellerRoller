@@ -3,6 +3,7 @@ from flask import Flask, request
 import json
 import os
 import sys
+import TravellerRoller
 
 app = Flask(__name__)
 
@@ -17,10 +18,10 @@ def update():
 @app.route('/webhook',methods=['POST'])
 def webhook():
 	data = json.loads(request.data)
-	print(f"New commit by: {data['commits'][0]['author']['name']}")
-	if data["action"] == "closed":
+	if data["action"] == "closed" and data["pull_request"]["merged"] == True:
 		update()
 	return "OK"
 
 if __name__ == '__main__':
 	app.run(host="0.0.0.0", port=8087)
+	TravellerRoller.start()
