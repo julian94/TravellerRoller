@@ -8,7 +8,7 @@ import subprocess
 
 app = Flask(__name__)
 subprocess_handle = None
-subprocess_file = "/TravellerRoller.py"
+subprocess_file = ".\TravellerRoller.py"
 
 def git_pull():
 	g = git.cmd.Git(".")
@@ -21,6 +21,7 @@ def start_subprocess():
 		stdout=subprocess.PIPE,
 		stderr=subprocess.STDOUT)
 	print(f"Started: {subprocess_file}")
+	#subprocess_handle.start()
 
 def stop_subprocess():
 	subprocess_handle.kill()
@@ -43,5 +44,4 @@ def webhook():
 
 if __name__ == '__main__':
 	start_subprocess()
-	stop_subprocess()
 	app.run(host="0.0.0.0", port=8087)

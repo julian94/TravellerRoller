@@ -370,6 +370,8 @@ ships = None
 token = None
 
 def start():
+	global ships
+	global token
 	ships = json.load(open('./ships.json'))
 	token = json.load(open('./token.json'))["token"]
 	client = TravellerRoller()
